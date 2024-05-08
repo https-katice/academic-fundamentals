@@ -1,5 +1,5 @@
-\documentclass[12pt]{spieman}  % 12pt font required by SPIE;
-%\documentclass[a4paper,12pt]{spieman}  % use this instead for A4 paper
+\documentclass[12pt]{spieman}
+%\documentclass[12pt]{mnras}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{graphicx}
 \usepackage{setspace}
@@ -7,13 +7,15 @@
 
 \title{Age Estimation; Morphs; Facial Recognition}
 
-\author[a]{Krivonosova Ekaterina and Chernikova Polina}
-\affil[a]{Samara University}
+\author{Krivonosova Ekaterina and Chernikova Polina}
+\affil{Samara University}
 
 \renewcommand{\cftdotsep}{\cftnodots}
 \cftpagenumbersoff{figure}
 \cftpagenumbersoff{table} 
 \begin{document} 
+
+\tableofcontents
 \maketitle
 
 \begin{spacing}{2}   % use double spacing for rest of manuscript
@@ -90,9 +92,9 @@ Next, the outputs of the convolutions add an additive bias and an element-wise n
 
 \begin{equation}
 \label{eq:fov}
-\eta_{ij}^{mn} = \sigma{(b_{ij}+\sum\nolimits_{\delta}\sum\nolimits_{p=0}^{P_{i}-1}\sum\nolimits_{q=0}^{Q_{i}-1}}\omega_{ij}^{pq})\,
+\eta_{ij}^{mn} =\sigma\left(b_{ij}+\sum_{\delta}\sum_{p=0}^{P_{i}-1}\sum_{q=0}^{Q_{i}-1}\omega_{ij}^{pq}\right) \text{, where: $b_{ij}$ represents the bias of this feature map.}
 \end{equation}
-where $b_{ij}$ represents the bias of this feature map, and $\sigma$ indexes over the set of the feature maps in the $(i - 1)th$ layer, which are connected to this convolutional layer. $\omega_{ij\sigma}^{pq}$ denotes the value at the position ( p, q) of the kernel, which is connected to the kth feature map.
+$\Sigma$ indexes over the set of the feature maps in the $(i - 1)th$ layer, which are connected to this convolutional layer. $\omega_{ij\sigma}^{pq}$ denotes the value at the position ( p, q) of the kernel, which is connected to the kth feature map.
 
 \section{PRELIMINARY INFORMATION}
 \label{sect:sections}
@@ -116,19 +118,24 @@ The process of feature fusion. During the validation and test stage, Race-Net, A
 \item Max Pooling Layer.
 \end{enumerate}
 
-To achieve the target, two normalization operations, i.e., subtractive and divisive, are performed. ηmnk denotes the value of an unit at position $(m, n)$ in the kth feature map. We have Equation~(\ref{eq:fov2})
+To achieve the target, two normalization operations, i.e., subtractive and divisive, are performed. $mnk$ denotes the value of an unit at position $(m, n)$ in the $kth$ feature map. We have Equation~(\ref{eq:fov2})
 
 \begin{equation}
 \label{eq:fov2}
-\zeta_{mnk}= \eta_{mnk}-\sum\nolimits_{p=-\frac{P_{i}-1}{2}}^{\frac{P_{i}-1}{2}}\sum\nolimits_{p=-\frac{Q_{i}-1}{2}}^{\frac{Q_{i}-1}{2}}\sum\nolimits_{j=1}^{J_{j}}\omega\,
+\zeta_{mnk}= \eta_{mnk}-\sum_{p=-\frac{P_{i}-1}{2}}^{\frac{P_{i}-1}{2}}\sum_{p=-\frac{Q_{i}-1}{2}}^{\frac{Q_{i}-1}{2}}\sum_{j=1}^{J_{j}}\omega\, \text{, where $\eta_{mnk}$ is a Gaussian filter with the size of 7×7.}
 \end{equation}
-where $\eta_{mnk}$ is a normalized Gaussian filter with the size of 7 × 7 at the first stage and 5 × 5 at the second stage. $z_{mnk}$ not only represents the input of the divisive normalization operations but also denotes the output of the subtractive normalization operations. Equation~(\ref{eq:fov3}) expresses the operator of the divisive normalization: 
+ $z_{mnk}$ not only represents the input of the divisive normalization operations but also denotes the output of the subtractive normalization operations. Equation~(\ref{eq:fov3}) expresses the operator of the divisive normalization: 
 
 \begin{equation}
 \label{eq:fov3}
-\eta_{mnk}=\frac{z_{mnk}}{(max(M,M(m,n)))}\,
+\eta_{mnk}=\frac{z_{mnk}}{\left(max(M,M(m,n))\right)}
 \end{equation}
 
+Equation~(\ref{eq:fov4}):
+\begin{equation}
+\label{eq:fov4}
+\sum_{i}^{\frac{P-Q}{z_{mnk}}}=\dfrac{\sqrt{{-1^{n\left(a_{i}^{2}+b_{i}(c_{i})\right)^{mxx_{i}^{3}+y_{i}}}+z_{i}^{a_{i}^{2}+b_{i}^{2}}}}} {a_{1}+\sqrt{\dfrac{\omega_{1}}{\zeta_{1}}} - \zeta_{1}^{2}}
+\end{equation}
 
 \end{spacing}
 \end{document}
